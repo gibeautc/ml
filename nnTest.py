@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.externals import joblib
 from sklearn.preprocessing import StandardScaler  
+from sklearn.linear_model import PassiveAggressiveRegressor
 importTime=time.time()-st
 print("Time to import: "+str(importTime))
 st=time.time()
@@ -45,16 +46,16 @@ print("Time to split and Scale Data: "+str(scaleTime))
 
 #X = [[0, 0], [2, 2]]
 #y = [0.5, 2.5]
-clf = MLPRegressor(hidden_layer_sizes=(1000,), random_state=1, max_iter=100, warm_start=True)
+#clf = MLPRegressor(hidden_layer_sizes=(1000,), random_state=1, max_iter=1, warm_start=True)
+clf = PassiveAggressiveRegressor(random_state=1,warm_start=True,max_iter=100)
 st=time.time()
 ttList=[]
 for i in range(len(Xtrain)):
 	tt=time.time()
-	clf = clf.fit(Xtrain, Ytrain)
+	clf = clf.partial_fit(Xtrain, Ytrain)
 	print(i/len(Xtrain))
 	ttList.append(time.time()-tt)
 trainTime=time.time()-st
-print("Time to train: "+str(trainTime))
 joblib.dump(clf,'currentModel.mod')
 pred=[]
 st=time.time()
