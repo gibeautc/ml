@@ -3,6 +3,8 @@ from sklearn.model_selection import train_test_split
 from sklearn import tree, metrics
 import matplotlib.pyplot as plt
 import numpy as np
+from sklearn.externals import joblib
+
 		
 X=[]
 Y=[]
@@ -23,6 +25,7 @@ Xtrain,Xtest,Ytrain,Ytest=train_test_split(X,Y,test_size=0.33,random_state=42)
 #y = [0.5, 2.5]
 clf = tree.DecisionTreeRegressor()
 clf = clf.fit(Xtrain, Ytrain)
+joblib.dump(clf,'currentModel.mod')
 #print(clf.predict([[45,50,80,5]]))
 pred=[]
 for x in range(len(Xtest)):
