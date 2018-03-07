@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.externals import joblib
 from sklearn.preprocessing import StandardScaler  
+import time
 
 scale=True 
 #with scaling on, this seems to give a good "minimum" model, meaning the real value is always more then the predicted value, however somtimes by 
@@ -32,14 +33,17 @@ if scale:
 #X = [[0, 0], [2, 2]]
 #y = [0.5, 2.5]
 clf = MLPRegressor(hidden_layer_sizes=(1000,), random_state=1, max_iter=100, warm_start=True)
+st=time.time()
 for i in range(len(Xtrain)):
 	clf = clf.fit(Xtrain, Ytrain)
+print("Time to train: "+str(time.time()-st))
 joblib.dump(clf,'currentModel.mod')
-#print(clf.predict([[45,50,80,5]]))
 pred=[]
+st=time.time()
 for x in range(len(Xtest)):
 	pred.append(clf.predict([Xtest[x]]))
 score=metrics.mean_absolute_error(Ytest,clf.predict(Xtest))
+print("Time to predict: "+str(time.time()-st))
 print("Mean ABS error: %f" % score)
 
 fig, ax = plt.subplots()
